@@ -1,0 +1,11 @@
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/bin/Debug/netcoreapp2.0/joinmeserver.deps.json
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/bin/Debug/netcoreapp2.0/joinmeserver.runtimeconfig.json
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/bin/Debug/netcoreapp2.0/joinmeserver.runtimeconfig.dev.json
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/bin/Debug/netcoreapp2.0/joinmeserver.dll
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/bin/Debug/netcoreapp2.0/joinmeserver.pdb
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/obj/Debug/netcoreapp2.0/joinmeserver.csproj.CoreCompileInputs.cache
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/obj/Debug/netcoreapp2.0/joinmeserver.AssemblyInfoInputs.cache
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/obj/Debug/netcoreapp2.0/joinmeserver.AssemblyInfo.cs
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/obj/Debug/netcoreapp2.0/joinmeserver.dll
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/obj/Debug/netcoreapp2.0/joinmeserver.pdb
+/Users/SentinelSoftware/Documents/joinmeserver/joinmeserver/obj/Debug/netcoreapp2.0/joinmeserver.csprojResolveAssemblyReference.cache

@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{5A4C980E-74D2-440E-B1CD-9B22437DABD3}|Default">
+  <MonoDevelop.Ide.ItemProperties.joinmeserver PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="joinmeserver/Repository/IHappeningRepository.cs">
+    <Files>
+      <File FileName="joinmeserver/Controllers/HappeningController.cs" Line="34" Column="31" />
+      <File FileName="joinmeserver/Startup.cs" Line="19" Column="14" />
+      <File FileName="joinmeserver/Models/Settings.cs" Line="1" Column="1" />
+      <File FileName="joinmeserver/Models/Happening.cs" Line="8" Column="28" />
+      <File FileName="joinmeserver/Repository/HappeningRepository.cs" Line="10" Column="50" />
+      <File FileName="joinmeserver/Repository/IHappeningRepository.cs" Line="8" Column="6" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

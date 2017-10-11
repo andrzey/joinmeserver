@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "/Users/SentinelSoftware/.dotnet/store/|arch|/|tfm|",
+      "/Users/SentinelSoftware/.nuget/packages"
+    ]
+  }
+}

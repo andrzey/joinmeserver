@@ -2,27 +2,28 @@
 using joinmeserver.Repository;
 using joinmeserver.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace joinmeserver.Controllers
 {
     [Route("api/[controller]")]
     public class HappeningController : Controller
     {
-        private readonly IHappeningRepository _happeningRepository;
+        private readonly HappeningRepository _happeningRepository;
 
-        public HappeningController(IHappeningRepository happeningRepository)
+        public HappeningController(HappeningRepository happeningRepository)
         {
             _happeningRepository = happeningRepository;
         }
 
         [HttpPost]
-        public IActionResult AddHappening([FromBody]Happening happening)
+        public async Task<IActionResult> AddHappening([FromBody]Happening happening)
         {
-            if(happening == null)
+            if (happening == null)
             {
                 return BadRequest("Happening is missing or deserilization failed");
             }
-            
+
             var newHappening = new Happening
             {
                 Id = new Guid(),
@@ -30,8 +31,16 @@ namespace joinmeserver.Controllers
                 Place = happening.Place
             };
 
-            _happeningRepository.AddHappening(newHappening);
+            await _happeningRepository.AddHappening(newHappening);
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHappeningList()
+        {
+            var happenings = await _happeningRepository.GetAllHappenings();
+
+            return Json(happenings);
         }
     }
 }

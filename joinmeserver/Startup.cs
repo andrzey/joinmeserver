@@ -9,21 +9,25 @@ namespace joinmeserver
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Config { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration config)
         {
-            services.AddMvc();
-            services.Configure<Settings>(options =>
-            {
-                options.ConnectionString = "mongodb://localhost:27017"; //Configuration.GetSection("MongoConnection:ConnectionString").Value;
-                options.Database = "JoinmeDb"; //Configuration.GetSection("MongoConnection:Database").Value;
-            });
-            services.AddTransient<IHappeningRepository, HappeningRepository>();
+            Config = config;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.Configure<Settings>(options =>
+            {
+                options.ConnectionString = Config.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database = Config.GetSection("MongoConnection:Database").Value;
+            });
+
+            services.AddScoped<HappeningRepository>();
+            services.AddMvc();
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

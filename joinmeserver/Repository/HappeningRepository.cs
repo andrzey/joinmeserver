@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using joinmeserver.Context;
 using joinmeserver.Models;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace joinmeserver.Repository
 {
-    public class HappeningRepository: IHappeningRepository
+    public class HappeningRepository
     {
         private readonly HappeningContext _context = null;
 
@@ -19,12 +21,29 @@ namespace joinmeserver.Repository
         public async Task AddHappening(Happening item)
         {
             await _context.Happenings.InsertOneAsync(item);
-
         }
 
-        public Task<IEnumerable<Happening>> GetAllHappenings()
+        public async Task<IEnumerable<Happening>> GetAllHappenings()
         {
-            throw new NotImplementedException();
+            List<Happening> happenings;
+
+            try
+            {
+                happenings = await _context.Happenings.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
+            return happenings.Select(item => new Happening 
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Place = item.Place
+            });
+
         }
 
         public Task<Happening> GetHappening(string id)

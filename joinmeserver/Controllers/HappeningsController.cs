@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace joinmeserver.Controllers
 {
     [Route("api/[controller]")]
-    public class HappeningController : Controller
+    public class HappeningsController : Controller
     {
         private readonly HappeningRepository _happeningRepository;
 
-        public HappeningController(HappeningRepository happeningRepository)
+        public HappeningsController(HappeningRepository happeningRepository)
         {
             _happeningRepository = happeningRepository;
         }

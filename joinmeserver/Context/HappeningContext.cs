@@ -6,7 +6,7 @@ namespace joinmeserver.Context
 {
     public class HappeningContext
     {
-        private readonly IMongoDatabase _database = null;
+        readonly IMongoDatabase _database = null;
 
         public HappeningContext(IOptions<Settings> settings)
         {

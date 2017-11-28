@@ -29,7 +29,7 @@ namespace joinmeserver.Repository
 
             try
             {
-                happenings = await _context.Happenings.Find(_ => true).ToListAsync();
+                happenings = await _context.Happenings.Find(FilterDefinition<Happening>.Empty).ToListAsync();
             }
             catch (Exception ex)
             {

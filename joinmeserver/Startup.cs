@@ -25,6 +25,7 @@ namespace joinmeserver
             });
 
             services.AddScoped<HappeningRepository>();
+            services.AddScoped<UserRepository>();
             services.AddMvc();
         }
 

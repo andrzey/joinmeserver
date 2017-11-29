@@ -1,6 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using joinmeserver.Models;
+using joinmeserver.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -9,12 +11,28 @@ namespace joinmeserver.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        private readonly UserRepository _userRepository;
+
+        public UserController(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> LoginWithFacebook([FromBody]FacebookToken token)
         {
-            var user = await GetFacebookUser(token.AccessToken);
-            if (user == null)
-                return NotFound();
+            var facebookUser = await GetFacebookUser(token.AccessToken);
+
+            if (facebookUser == null)
+                return NotFound("Facebook returned no user");
+
+            var user = await _userRepository.GetUserByFacebookId(facebookUser.FacebookId);
+
+            if(user == null)
+            {
+                await _userRepository.AddUser(facebookUser);
+                return Ok(facebookUser);
+            }
             
             return Ok(user);
         }
@@ -38,6 +56,7 @@ namespace joinmeserver.Controllers
                 {
                     FacebookId = json["id"].ToString(),
                     FirstName = json["first_name"].ToString(),
+                    Interests= new List<string>(),
                 };
 
                 return user;

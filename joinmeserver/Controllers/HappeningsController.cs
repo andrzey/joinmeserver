@@ -17,7 +17,7 @@ namespace joinmeserver.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddHappening([FromBody]Happening happening)
+        public async Task<IActionResult> CreateHappening([FromBody]Happening happening)
         {
             if (happening == null)
             {
@@ -27,6 +27,7 @@ namespace joinmeserver.Controllers
             var newHappening = new Happening
             {
                 Id = new Guid(),
+                CreatedByUser = happening.CreatedByUser,
                 Name = happening.Name,
                 Place = happening.Place
             };
@@ -35,12 +36,37 @@ namespace joinmeserver.Controllers
             return Ok();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteHappening(Guid id)
+        {
+            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+
+            var result = await _happeningRepository.DeleteHappening(id);
+
+            if (!result) return NotFound();
+
+            return StatusCode(204);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetHappeningList()
         {
             var happenings = await _happeningRepository.GetAllHappenings();
 
-            return Json(happenings);
+            return Ok(happenings);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetHappening(Guid id)
+        {
+            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+
+            var happening = await _happeningRepository.GetHappening(id);
+
+            if (happening == null)
+                return NotFound(id);
+
+            return Ok(happening);
         }
     }
 }

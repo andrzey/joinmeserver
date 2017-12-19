@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using joinmeserver.Models;
@@ -12,10 +13,12 @@ namespace joinmeserver.Controllers
     public class UserController : Controller
     {
         private readonly UserRepository _userRepository;
+        private readonly HappeningRepository _happeningRepository;
 
-        public UserController(UserRepository userRepository)
+        public UserController(UserRepository userRepository, HappeningRepository happeningRepository)
         {
             _userRepository = userRepository;
+            _happeningRepository = happeningRepository;
         }
 
         [HttpPost("login")]
@@ -54,13 +57,26 @@ namespace joinmeserver.Controllers
                 var json = JObject.Parse(result);
                 var user = new User
                 {
-                    FacebookId = json["id"].ToString(),
+                    FacebookId =json["id"].ToString(),
                     FirstName = json["first_name"].ToString(),
-                    Interests= new List<string>(),
+                    Interests = new List<string>(),
                 };
 
                 return user;
             }
+        }
+
+        [HttpGet("{userId}/happenings")]
+        public async Task<IActionResult> GetHappeningsForUser(string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) throw new ArgumentNullException(nameof(userId));
+
+            var createdHappenings = await _happeningRepository.GetHappeningsUserCreated(userId);
+            var attendingHappenings = await _happeningRepository.GetHappeningsUserIsAttending(userId);
+
+            createdHappenings.AddRange(attendingHappenings);
+
+            return Ok(createdHappenings);
         }
     }
 }

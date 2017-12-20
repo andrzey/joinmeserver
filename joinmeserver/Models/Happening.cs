@@ -13,6 +13,6 @@ namespace joinmeserver.Models
         public string Name { get; set; }
         public string Place { get; set; }
         public List<Comment> Comments { get; set; }
-        public List<User> Users { get; set; }
+        public List<AttendingUser> Attendings { get; set; }
     }
 }

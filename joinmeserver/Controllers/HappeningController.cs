@@ -11,10 +11,12 @@ namespace joinmeserver.Controllers
     public class HappeningController : Controller
     {
         private readonly HappeningRepository _happeningRepository;
+        private readonly UserRepository _userRepository;
 
-        public HappeningController(HappeningRepository happeningRepository)
+        public HappeningController(HappeningRepository happeningRepository, UserRepository userRepository)
         {
             _happeningRepository = happeningRepository;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
@@ -78,6 +80,31 @@ namespace joinmeserver.Controllers
             if (string.IsNullOrEmpty(comment.Body)) return BadRequest(nameof(comment.Body));
 
             var result = await _happeningRepository.AddCommentToHappening(id, comment);
+
+            if (result == null)
+                return StatusCode(500);
+
+            return Ok();
+        }
+
+        [HttpPut("{id}/attending/{userId}")]
+        public async Task<IActionResult> AttendHappening(Guid id, string userId)
+        {
+            if (id == Guid.Empty) return BadRequest(nameof(id));
+            if (string.IsNullOrEmpty(userId)) return BadRequest(nameof(userId));
+
+            var user = await _userRepository.GetUserByFacebookId(userId);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            var attendingUser = new AttendingUser
+            {
+                FacebookId = user.FacebookId,
+                FirstName = user.FirstName
+            };
+
+            var result = await _happeningRepository.AddUserToHappening(id, attendingUser);
 
             if (result == null)
                 return StatusCode(500);

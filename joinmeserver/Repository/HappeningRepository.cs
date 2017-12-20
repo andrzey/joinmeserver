@@ -78,7 +78,7 @@ namespace joinmeserver.Repository
         {
             if (string.IsNullOrEmpty(userId)) throw new ArgumentNullException(nameof(userId));
 
-            var filter = Builders<Happening>.Filter.ElemMatch(h => h.Users, h => h.FacebookId == userId);
+            var filter = Builders<Happening>.Filter.ElemMatch(h => h.Attendings, h => h.FacebookId == userId);
             var happenings = await _context.Happenings.Find(filter).ToListAsync();
 
             return happenings;
@@ -90,7 +90,17 @@ namespace joinmeserver.Repository
             if (happeningId == Guid.Empty) throw new ArgumentNullException(nameof(happeningId));
 
             var update = Builders<Happening>.Update.Push("Comments", comment);
+            var result = await _context.Happenings.FindOneAndUpdateAsync(h => h.Id == happeningId, update);
 
+            return result;
+        }
+
+        public async Task<Happening> AddUserToHappening(Guid happeningId, AttendingUser user)
+        {
+            if (happeningId == Guid.Empty) throw new ArgumentNullException(nameof(happeningId));
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            var update = Builders<Happening>.Update.Push("Attendings", user);
             var result = await _context.Happenings.FindOneAndUpdateAsync(h => h.Id == happeningId, update);
 
             return result;

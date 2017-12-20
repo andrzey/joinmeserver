@@ -87,7 +87,7 @@ namespace joinmeserver.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}/attending/{userId}")]
+        [HttpPut("{id}/attend/{userId}")]
         public async Task<IActionResult> AttendHappening(Guid id, string userId)
         {
             if (id == Guid.Empty) return BadRequest(nameof(id));

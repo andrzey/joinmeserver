@@ -87,10 +87,10 @@ namespace joinmeserver.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}/attend/{userId}")]
-        public async Task<IActionResult> AttendHappening(Guid id, string userId)
+        [HttpPut("{happeningId}/attend/{userId}")]
+        public async Task<IActionResult> AttendHappening(Guid happeningId, string userId)
         {
-            if (id == Guid.Empty) return BadRequest(nameof(id));
+            if (happeningId == Guid.Empty) return BadRequest(nameof(happeningId));
             if (string.IsNullOrEmpty(userId)) return BadRequest(nameof(userId));
 
             var user = await _userRepository.GetUserByFacebookId(userId);
@@ -104,7 +104,21 @@ namespace joinmeserver.Controllers
                 FirstName = user.FirstName
             };
 
-            var result = await _happeningRepository.AddUserToHappening(id, attendingUser);
+            var result = await _happeningRepository.AddUserToHappening(happeningId, attendingUser);
+
+            if (result == null)
+                return StatusCode(500);
+
+            return Ok();
+        }
+
+        [HttpPut("{happeningId}/unattend/{userId}")]
+        public async Task<IActionResult> UnattendHappening(Guid happeningId, string userId)
+        {
+            if (happeningId == Guid.Empty) return BadRequest(nameof(happeningId));
+            if (string.IsNullOrEmpty(userId)) return BadRequest(nameof(userId));
+
+            var result = await _happeningRepository.RemoveUserFromHappening(happeningId, userId);
 
             if (result == null)
                 return StatusCode(500);

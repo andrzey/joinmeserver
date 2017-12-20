@@ -105,5 +105,16 @@ namespace joinmeserver.Repository
 
             return result;
         }
+
+        public async Task<Happening> RemoveUserFromHappening(Guid happeningId, string userId)
+        {
+            if (happeningId == Guid.Empty) throw new ArgumentNullException(nameof(happeningId));
+            if (string.IsNullOrEmpty(userId)) throw new ArgumentNullException(nameof(userId));
+
+            var update = Builders<Happening>.Update.PullFilter(h => h.Attendings, u => u.FacebookId == userId);
+            var result = await _context.Happenings.FindOneAndUpdateAsync(h => h.Id == happeningId, update);
+
+            return result;
+        }
     }
 }

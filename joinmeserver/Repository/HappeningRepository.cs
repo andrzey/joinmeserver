@@ -47,7 +47,7 @@ namespace joinmeserver.Repository
             });
         }
 
-        public async Task<Happening> GetHappening(Guid id)
+        public async Task<Happening> GetHappeningById(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
 
@@ -82,6 +82,18 @@ namespace joinmeserver.Repository
             var happenings = await _context.Happenings.Find(filter).ToListAsync();
 
             return happenings;
+        }
+
+        public async Task<Happening> AddCommentToHappening(Guid happeningId, Comment comment)
+        {
+            if (comment == null) throw new ArgumentNullException(nameof(comment));
+            if (happeningId == Guid.Empty) throw new ArgumentNullException(nameof(happeningId));
+
+            var update = Builders<Happening>.Update.Push("Comments", comment);
+
+            var result = await _context.Happenings.FindOneAndUpdateAsync(h => h.Id == happeningId, update);
+
+            return result;
         }
     }
 }

@@ -3,15 +3,16 @@ using joinmeserver.Repository;
 using joinmeserver.Models;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace joinmeserver.Controllers
 {
     [Route("api/[controller]")]
-    public class HappeningsController : Controller
+    public class HappeningController : Controller
     {
         private readonly HappeningRepository _happeningRepository;
 
-        public HappeningsController(HappeningRepository happeningRepository)
+        public HappeningController(HappeningRepository happeningRepository)
         {
             _happeningRepository = happeningRepository;
         }
@@ -39,7 +40,7 @@ namespace joinmeserver.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHappening(Guid id)
         {
-            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+            if (id == Guid.Empty) return BadRequest(nameof(id));
 
             var result = await _happeningRepository.DeleteHappening(id);
 
@@ -59,14 +60,29 @@ namespace joinmeserver.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHappening(Guid id)
         {
-            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+            if (id == Guid.Empty) return BadRequest(nameof(id));
 
-            var happening = await _happeningRepository.GetHappening(id);
+            var happening = await _happeningRepository.GetHappeningById(id);
 
             if (happening == null)
                 return NotFound(id);
 
             return Ok(happening);
+        }
+
+        [HttpPut("{id}/comment")]
+        public async Task<IActionResult> PostComment([FromBody] Comment comment, Guid id)
+        {
+            if (id == Guid.Empty) return BadRequest(nameof(id));
+            if (comment == null) return BadRequest(nameof(comment));
+            if (string.IsNullOrEmpty(comment.Body)) return BadRequest(nameof(comment.Body));
+
+            var result = await _happeningRepository.AddCommentToHappening(id, comment);
+
+            if (result == null)
+                return StatusCode(500);
+
+            return Ok();
         }
     }
 }
